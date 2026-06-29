@@ -4,14 +4,14 @@ const repoContainer = document.getElementById("github-repos");
 async function fetchGitHubRepos() {
   try {
     const response = await fetch(
-      `https://github.com{GITHUB_USERNAME}/repos?sort=updated&per_page=6`,
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`,
     );
 
     if (!response.ok) {
       throw new Error("Failed to fetch repositories");
     }
 
-    const repos = (await response.ok) ? await response.json() : [];
+    const repos = await await response.json();
 
     // Clear any loading text
     repoContainer.innerHTML = "";
@@ -22,12 +22,12 @@ async function fetchGitHubRepos() {
       repoCard.className = "repo-card";
 
       repoCard.innerHTML = `
-        <h3><a href="${repo.html_url}" target="_blank">${repo.name}</a></h3>
+        <h3><a href="${repo.html_url}" target="_blank " rel="noopener noreferrer">${repo.name}</a></h3>
         <p>${repo.description || "No description provided."}</p>
         <div class="repo-stats">
-          <span>⭐ ${repo.stargazers_count || "Probably popular but not many stars"}</span>
-          <span>🍴 ${repo.forks_count || "Maybe dude like spoons"}</span>
-          <span>🔧 ${repo.language || "Misc"}</span>
+          <span>⭐ ${"Stars: " + repo.stargazers_count}</span>
+          <span>🍴 ${"Forks: " + repo.forks_count}</span>
+          <span>🔧 ${"Language: " + repo.language || "Misc"}</span>
         </div>
       `;
 
